@@ -1,21 +1,76 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, StatusBar } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
-export default function Weather({ temp }) {
+const weatherOptions = {
+  Thunderstorm: {
+    iconName: "weather-lightning",
+    gradient: ["#373B44", "#4286f4"],
+  },
+  Drizzle: {
+    iconName: "weather-hail",
+    gradient: ["#89F7FE", "#66A6FF"],
+  },
+  Rain: {
+    iconName: "weather-rainy",
+    gradient: ["#00C6FB", "#005BEA"],
+  },
+  Snow: {
+    iconName: "weather-snowy",
+    gradient: ["#7DE2FC", "#B9B6E5"],
+  },
+  Atmosphere: {
+    iconName: "weather-hail",
+    gradient: ["#89F7FE", "#66A6FF"],
+  },
+  Clear: {
+    iconName: "weather-sunny",
+    gradient: ["#FF7300", "#FEF253"],
+  },
+  Clouds: {
+    iconName: "weather-cloudy",
+    gradient: ["#D7D2CC", "#304352"],
+    title: "Clouds",
+    subTitle: "Not Sunny But Not Bad",
+  },
+  Haze: {
+    iconName: "weather-cloudy",
+    gradient: ["#D7D2CC", "#304352"],
+  },
+  Mist: {
+    iconName: "weather-hail",
+    gradient: ["#4DA0B0", "#D39D38"],
+  },
+  Dust: {
+    iconName: "weather-hail",
+    gradient: ["#4DA0B0", "#D39D38"],
+  },
+};
+
+export default function Weather({ temp, condition }) {
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={weatherOptions[condition].gradient}
+      style={styles.container}
+    >
+      <StatusBar barStyle="light-content" />
       <View style={styles.halfContainer}>
         <MaterialCommunityIcons
-          name="weather-lightning-rainy"
+          name={weatherOptions[condition].iconName}
           size={96}
-          color="black"
+          color="white"
         />
-        <Text style={styles.temp}>{temp}</Text>
+        <Text style={styles.temp}>{temp}°</Text>
       </View>
-      <View style={styles.halfContainer}></View>
-    </View>
+      <View style={{ ...styles.halfContainer, ...styles.textContainer }}>
+        <Text style={styles.title}>{weatherOptions[condition].title}</Text>
+        <Text style={styles.subTitle}>
+          {weatherOptions[condition].subTitle}
+        </Text>
+      </View>
+    </LinearGradient>
   );
 }
 
@@ -43,10 +98,26 @@ const styles = StyleSheet.create({
   },
   temp: {
     fontSize: 42,
+    color: "white",
   },
   halfContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  title: {
+    fontWeight: "300",
+    fontSize: 48,
+    marginBottom: 10,
+    color: "white",
+  },
+  subTitle: {
+    fontWeight: "600",
+    fontSize: 20,
+    color: "white",
+  },
+  textContainer: {
+    paddingHorizontal: 20,
+    alignItems: "flex-start",
   },
 });
